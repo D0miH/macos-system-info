@@ -1,0 +1,33 @@
+{
+    "name": "smc-node-kit",
+    "version": "0.1.0",
+    "description": "Node bindings to communicate with the Apple SMC.",
+    "main": "index.js",
+    "scripts": {
+        "build": "node-gyp rebuild",
+        "clean": "node-gyp clean"
+    },
+    "gypfile": true,
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/D0miH/SMCNodeKit.git"
+    },
+    "keywords": [
+        "smc",
+        "node",
+        "apple",
+        "mac"
+    ],
+    "author": "D0miH",
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/D0miH/SMCNodeKit/issues"
+    },
+    "homepage": "https://github.com/D0miH/SMCNodeKit#readme",
+    "devDependencies": {
+        "node-gyp": "^5.0.0"
+    },
+    "dependencies": {
+        "node-addon-api": "^1.6.3"
+    }
+}

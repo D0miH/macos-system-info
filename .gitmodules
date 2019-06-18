@@ -1,0 +1,4 @@
+[submodule "natives/SMCPPKit"]
+	path = natives/SMCPPKit
+	url = https://github.com/iglance/SMCPPKit.git
+	branch = master
