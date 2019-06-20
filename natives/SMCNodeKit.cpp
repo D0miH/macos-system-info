@@ -8,6 +8,7 @@ Napi::Object SMCNodeKit::Init(Napi::Env env, Napi::Object exports){
     Napi::Function func = DefineClass(env, "SMCNodeKit", {
         InstanceMethod("open", &SMCNodeKit::OpenWrapper),
         InstanceMethod("close", &SMCNodeKit::CloseWrapper),
+        InstanceMethod("getKeyInfo", &SMCNodeKit::GetKeyInfoWrapper),
         InstanceMethod("getCPUTemp", &SMCNodeKit::GetCPUTempWrapper)
     });
 
@@ -58,6 +59,27 @@ void SMCNodeKit::CloseWrapper(const Napi::CallbackInfo& info) {
     } catch(const std::runtime_error& e) {
         throw Napi::Error::New(env, e.what());
     }
+}
+
+Napi::Value SMCNodeKit::GetKeyInfoWrapper(const Napi::CallbackInfo& info) {
+    Napi::Env env = info.Env();
+    Napi::HandleScope scope(env);
+
+    if(info.Length() != 1 || !info[0].IsString()) {
+        Napi::TypeError::New(env, "Expected a SMC key").ThrowAsJavaScriptException();
+    }
+
+    Napi::String givenKey = info[0].As<Napi::String>();
+    DataType keyInfo = this->smcKit_->getKeyInfo(givenKey);
+    Napi::String fourCharCode = Napi::String::New(env, Utils::fourCharCodeToString(keyInfo.type));
+    Napi::Number size = Napi::Number::New(env, keyInfo.size);
+
+    // create the return object and assign the values
+    Napi::Object returnObject = Napi::Object::New(env);
+    returnObject.Set("type", fourCharCode);
+    returnObject.Set("size", size);
+
+    return returnObject;
 }
 
 Napi::Value SMCNodeKit::GetCPUTempWrapper(const Napi::CallbackInfo& info) {
