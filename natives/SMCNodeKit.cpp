@@ -13,7 +13,9 @@ Napi::Object SMCNodeKit::Init(Napi::Env env, Napi::Object exports){
         InstanceMethod("getFanCount", &SMCNodeKit::GetFanCountWrapper),
         InstanceMethod("getFanMinSpeed", &SMCNodeKit::GetFanMinSpeedWrapper),
         InstanceMethod("getFanMaxSpeed", &SMCNodeKit::GetFanMaxSpeedWrapper),
-        InstanceMethod("getCurrentFanSpeed", &SMCNodeKit::GetCurrentFanSpeedWrapper)
+        InstanceMethod("getCurrentFanSpeed", &SMCNodeKit::GetCurrentFanSpeedWrapper),
+        InstanceMethod("getBatteryCount", &SMCNodeKit::GetBatteryCountWrapper),
+        InstanceMethod("isOnAC", &SMCNodeKit::IsOnACWrapper)
     });
 
     constructor = Napi::Persistent(func);
@@ -167,6 +169,38 @@ Napi::Value SMCNodeKit::GetCurrentFanSpeedWrapper(const Napi::CallbackInfo& info
     try {
         int currentFanSpeed = this->smcKit_->getCurrentFanSpeed(fanId.Int32Value());
         return Napi::Number::New(env, currentFanSpeed);
+    } catch (const std::runtime_error& e) {
+        throw Napi::Error::New(env, e.what());
+    }
+}
+
+Napi::Value SMCNodeKit::GetBatteryCountWrapper(const Napi::CallbackInfo& info) {
+    Napi::Env env = info.Env();
+    Napi::HandleScope scope(env);
+
+    if(info.Length() != 0) {
+        Napi::TypeError::New(env, "No arguments expected").ThrowAsJavaScriptException();
+    }
+
+    try {
+        int batteryCount = this->smcKit_->getBatteryCount();
+        return Napi::Number::New(env, batteryCount);
+    } catch (const std::runtime_error& e) {
+        throw Napi::Error::New(env, e.what());
+    }
+}
+
+Napi::Value SMCNodeKit::IsOnACWrapper(const Napi::CallbackInfo& info) {
+    Napi::Env env = info.Env();
+    Napi::HandleScope scope(env);
+
+    if(info.Length() != 0) {
+        Napi::TypeError::New(env, "No arguments expected").ThrowAsJavaScriptException();
+    }
+
+    try {
+        bool onAc = this->smcKit_->isOnAC();
+        return Napi::Boolean::New(env, onAc);
     } catch (const std::runtime_error& e) {
         throw Napi::Error::New(env, e.what());
     }

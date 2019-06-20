@@ -25,6 +25,9 @@ private:
     Napi::Value GetFanMaxSpeedWrapper(const Napi::CallbackInfo& info);
     Napi::Value GetCurrentFanSpeedWrapper(const Napi::CallbackInfo& info);
 
+    Napi::Value GetBatteryCountWrapper(const Napi::CallbackInfo& info);
+    Napi::Value IsOnACWrapper(const Napi::CallbackInfo& info);
+
     SMCKit *smcKit_;
 };
 
