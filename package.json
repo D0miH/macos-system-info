@@ -4,7 +4,11 @@
     "description": "Node bindings to communicate with the Apple SMC.",
     "main": "index.js",
     "scripts": {
-        "build": "node-gyp rebuild",
+        "start": "node index.js",
+        "build:dev": "node-gyp -j 12 build --debug",
+        "build": "node-gyp -j 12 build",
+        "rebuild:dev": "node-gyp -j 12 rebuild --debug",
+        "rebuild": "node-gyp -j 12 rebuild",
         "clean": "node-gyp clean"
     },
     "gypfile": true,

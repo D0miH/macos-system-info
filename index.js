@@ -1,4 +1,7 @@
-const testAddon = require("./build/Release/smcnodekit.node");
+const { SMCNodeKit } = require("./build/Release/smcnodekit.node");
 
-console.log("addon", testAddon.test());
-module.exports = testAddon;
+const smc = new SMCNodeKit()
+smc.open()
+console.log("SMCNodeKit", smc.getCPUTemp());
+smc.close()
+module.exports = SMCNodeKit;
