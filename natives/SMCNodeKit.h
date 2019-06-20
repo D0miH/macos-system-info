@@ -12,10 +12,19 @@ public:
 
 private:
     static Napi::FunctionReference constructor;
+
     void OpenWrapper(const Napi::CallbackInfo& info);
     void CloseWrapper(const Napi::CallbackInfo& info);
+    
     Napi::Value GetKeyInfoWrapper(const Napi::CallbackInfo& info);
+    
     Napi::Value GetCPUTempWrapper(const Napi::CallbackInfo& info);
+    
+    Napi::Value GetFanCountWrapper(const Napi::CallbackInfo& info);
+    Napi::Value GetFanMinSpeedWrapper(const Napi::CallbackInfo& info);
+    Napi::Value GetFanMaxSpeedWrapper(const Napi::CallbackInfo& info);
+    Napi::Value GetCurrentFanSpeedWrapper(const Napi::CallbackInfo& info);
+
     SMCKit *smcKit_;
 };
 

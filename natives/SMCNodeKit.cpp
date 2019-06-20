@@ -9,7 +9,11 @@ Napi::Object SMCNodeKit::Init(Napi::Env env, Napi::Object exports){
         InstanceMethod("open", &SMCNodeKit::OpenWrapper),
         InstanceMethod("close", &SMCNodeKit::CloseWrapper),
         InstanceMethod("getKeyInfo", &SMCNodeKit::GetKeyInfoWrapper),
-        InstanceMethod("getCPUTemp", &SMCNodeKit::GetCPUTempWrapper)
+        InstanceMethod("getCPUTemp", &SMCNodeKit::GetCPUTempWrapper),
+        InstanceMethod("getFanCount", &SMCNodeKit::GetFanCountWrapper),
+        InstanceMethod("getFanMinSpeed", &SMCNodeKit::GetFanMinSpeedWrapper),
+        InstanceMethod("getFanMaxSpeed", &SMCNodeKit::GetFanMaxSpeedWrapper),
+        InstanceMethod("getCurrentFanSpeed", &SMCNodeKit::GetCurrentFanSpeedWrapper)
     });
 
     constructor = Napi::Persistent(func);
@@ -93,6 +97,76 @@ Napi::Value SMCNodeKit::GetCPUTempWrapper(const Napi::CallbackInfo& info) {
     try {
         int cpuTemp = this->smcKit_->getCPUTemp();
         return Napi::Number::New(env, cpuTemp);
+    } catch (const std::runtime_error& e) {
+        throw Napi::Error::New(env, e.what());
+    }
+}
+
+Napi::Value SMCNodeKit::GetFanCountWrapper(const Napi::CallbackInfo& info) {
+    Napi::Env env = info.Env();
+    Napi::HandleScope scope(env);
+
+    if(info.Length() != 0) {
+        Napi::TypeError::New(env, "No arguments expected").ThrowAsJavaScriptException();
+    }
+
+    try {
+        int fanCount = this->smcKit_->getFanCount();
+        return Napi::Number::New(env, fanCount);
+    } catch (const std::runtime_error& e) {
+        throw Napi::Error::New(env, e.what());
+    }
+}
+
+Napi::Value SMCNodeKit::GetFanMinSpeedWrapper(const Napi::CallbackInfo& info) {
+    Napi::Env env = info.Env();
+    Napi::HandleScope scope(env);
+
+    if(info.Length() != 1 || !info[0].IsNumber()) {
+        Napi::TypeError::New(env, "Expected the id of the fan").ThrowAsJavaScriptException();
+    }
+
+    Napi::Number fanId = Napi::Number::New(env, info[0].As<Napi::Number>());
+
+    try {
+        int minFanSpeed = this->smcKit_->getMinFanSpeed(fanId.Int32Value());
+        return Napi::Number::New(env, minFanSpeed);
+    } catch (const std::runtime_error& e) {
+        throw Napi::Error::New(env, e.what());
+    }
+}
+
+Napi::Value SMCNodeKit::GetFanMaxSpeedWrapper(const Napi::CallbackInfo& info) {
+    Napi::Env env = info.Env();
+    Napi::HandleScope scope(env);
+
+    if(info.Length() != 1 || !info[0].IsNumber()) {
+        Napi::TypeError::New(env, "Expected the id of the fan").ThrowAsJavaScriptException();
+    }
+
+    Napi::Number fanId = Napi::Number::New(env, info[0].As<Napi::Number>());
+
+    try {
+        int maxFanSpeed = this->smcKit_->getMaxFanSpeed(fanId.Int32Value());
+        return Napi::Number::New(env, maxFanSpeed);
+    } catch (const std::runtime_error& e) {
+        throw Napi::Error::New(env, e.what());
+    }
+}
+
+Napi::Value SMCNodeKit::GetCurrentFanSpeedWrapper(const Napi::CallbackInfo& info) {
+    Napi::Env env = info.Env();
+    Napi::HandleScope scope(env);
+
+    if(info.Length() != 1 || !info[0].IsNumber()) {
+        Napi::TypeError::New(env, "Expected the id of the fan").ThrowAsJavaScriptException();
+    }
+
+    Napi::Number fanId = Napi::Number::New(env, info[0].As<Napi::Number>());
+
+    try {
+        int currentFanSpeed = this->smcKit_->getCurrentFanSpeed(fanId.Int32Value());
+        return Napi::Number::New(env, currentFanSpeed);
     } catch (const std::runtime_error& e) {
         throw Napi::Error::New(env, e.what());
     }
