@@ -4,9 +4,8 @@
     "description": "Node bindings to communicate with the Apple SMC.",
     "main": "index.js",
     "scripts": {
-        "start": "node index.js",
-        "build:dev": "node-gyp -j 12 build --debug",
-        "build": "node-gyp -j 12 build",
+        "build-natives": "node-gyp -j 12 rebuild && mkdir -p ./bin && cp ./build/Release/smcnodekit.node ./bin",
+        "build": "npm run build-natives && tsc",
         "rebuild:dev": "node-gyp -j 12 rebuild --debug",
         "rebuild": "node-gyp -j 12 rebuild",
         "clean": "node-gyp clean"
@@ -29,7 +28,13 @@
     },
     "homepage": "https://github.com/D0miH/SMCNodeKit#readme",
     "devDependencies": {
-        "node-gyp": "^5.0.0"
+        "node-gyp": "^5.0.0",
+        "prettier": "^1.18.2",
+        "ts-node": "^8.3.0",
+        "tslint": "^5.18.0",
+        "tslint-config-prettier": "^1.18.0",
+        "typedoc": "^0.14.2",
+        "typescript": "^3.5.2"
     },
     "dependencies": {
         "node-addon-api": "^1.6.3"
