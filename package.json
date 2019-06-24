@@ -5,16 +5,17 @@
     "main": "lib/index.js",
     "types": "lib/index.d.ts",
     "scripts": {
-        "build-natives": "node-gyp -j 12 rebuild && mkdir -p ./bin && cp ./build/Release/smcnodekit.node ./bin",
+        "build-natives": "node-gyp -j 12 rebuild",
         "build": "npm run build-natives && tsc",
         "rebuild:dev": "node-gyp -j 12 rebuild --debug",
         "rebuild": "node-gyp -j 12 rebuild",
-        "clean": "node-gyp clean"
+        "clean": "node-gyp clean",
+        "prepare": "npm run build"
     },
     "gypfile": true,
     "files": [
         "lib/**/*",
-        "bin/**/*"
+        "natives/**/"
     ],
     "repository": {
         "type": "git",
