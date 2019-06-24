@@ -11,6 +11,10 @@
         "clean": "node-gyp clean"
     },
     "gypfile": true,
+    "files": [
+        "lib/**/*",
+        "bin/**/*"
+    ],
     "repository": {
         "type": "git",
         "url": "git+https://github.com/D0miH/SMCNodeKit.git"
