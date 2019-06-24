@@ -2,7 +2,8 @@
     "name": "smc-node-kit",
     "version": "0.1.0",
     "description": "Node bindings to communicate with the Apple SMC.",
-    "main": "index.js",
+    "main": "lib/index.js",
+    "types": "lib/index.d.ts",
     "scripts": {
         "build-natives": "node-gyp -j 12 rebuild && mkdir -p ./bin && cp ./build/Release/smcnodekit.node ./bin",
         "build": "npm run build-natives && tsc",
