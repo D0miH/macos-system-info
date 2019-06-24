@@ -1,3 +1,3 @@
-const { SMCNodeKit } = require('../build/Release/smcnodekit.node');
+const { SMCNodeKit } = require('../bin/smcnodekit.node');
 
 export default SMCNodeKit;
