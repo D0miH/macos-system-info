@@ -7,24 +7,10 @@ install:
     - npm install
     - npm install node-pre-gyp node-pre-gyp-github -g
 
-stages:
-    - name: build
-    - name: deploy
-      if: branch = master AND tag IS present
+script: node-pre-gyp install --build-from-source
 
-jobs:
-    include:
-        - stage: build
-          name: 'Build'
-          os: osx
-          osx_image: xcode10.1
-          language: node_js
-          node_js: '10'
-          script: node-pre-gyp install --build-from-source
-        - stage: deploy
-          name: 'Build'
-          os: osx
-          osx_image: xcode10.1
-          language: node_js
-          node_js: '10'
-          script: node-pre-gyp configure && node-pre-gyp build && node-pre-gyp package && node-pre-gyp-github publish --release
+deploy:
+    provider: npm
+    email: '$NPM_EMAIL'
+    api_key: '$NPM_TOKEN'
+    skip_cleanup: true
