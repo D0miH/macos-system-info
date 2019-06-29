@@ -20,7 +20,7 @@ jobs:
           osx_image: xcode10.1
           language: node_js
           node_js: '10'
-          script: node-pre-gyp --build-from-source
+          script: node-pre-gyp install --build-from-source
         - stage: deploy
           name: 'Build'
           os: osx
