@@ -5,10 +5,9 @@
     "main": "lib/src/index.js",
     "types": "lib/src/index.d.ts",
     "scripts": {
-        "build-natives": "node-pre-gyp install --fallback-to-build",
-        "build": "tsc",
-        "install": "npm run build-natives && npm run build",
-        "prepare": "npm run build"
+        "build-ts": "tsc",
+        "install": "node-pre-gyp install --fallback-to-build",
+        "prepare": "npm run build-ts"
     },
     "binary": {
         "module_name": "smc-node-kit",
