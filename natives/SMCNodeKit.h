@@ -1,34 +1,34 @@
 #ifndef SMC_NODE_KIT_H
 #define SMC_NODE_KIT_H
 
-#include <napi.h>
+#include <nan.h>
 #include "SMCPPKit/SMCKit.h"
 
-class SMCNodeKit : public Napi::ObjectWrap<SMCNodeKit> {
+class SMCNodeKit : public Nan::ObjectWrap
+{
 public:
-    static Napi::Object Init(Napi::Env ennv, Napi::Object exports);
-    SMCNodeKit(const Napi::CallbackInfo& info);
-    SMCKit* GetInternalInstance();
+    static Nan::Persistent<v8::FunctionTemplate> constructor;
+
+    static NAN_MODULE_INIT(Init);
+    static NAN_METHOD(New);
+
+    static NAN_METHOD(OpenWrapper);
+    static NAN_METHOD(CloseWrapper);
+
+    static NAN_METHOD(GetKeyInfoWrapper);
+
+    static NAN_METHOD(GetCpuTempWrapper);
+
+    static NAN_METHOD(GetFanCountWrapper);
+    static NAN_METHOD(GetMinFanSpeedWrapper);
+    static NAN_METHOD(GetMaxFanSpeedWrapper);
+    static NAN_METHOD(GetCurrentFanSpeedWrapper);
+
+    static NAN_METHOD(GetBatteryCountWrapper);
+    static NAN_METHOD(IsOnAcWrapper);
 
 private:
-    static Napi::FunctionReference constructor;
-
-    void OpenWrapper(const Napi::CallbackInfo& info);
-    void CloseWrapper(const Napi::CallbackInfo& info);
-    
-    Napi::Value GetKeyInfoWrapper(const Napi::CallbackInfo& info);
-    
-    Napi::Value GetCPUTempWrapper(const Napi::CallbackInfo& info);
-    
-    Napi::Value GetFanCountWrapper(const Napi::CallbackInfo& info);
-    Napi::Value GetFanMinSpeedWrapper(const Napi::CallbackInfo& info);
-    Napi::Value GetFanMaxSpeedWrapper(const Napi::CallbackInfo& info);
-    Napi::Value GetCurrentFanSpeedWrapper(const Napi::CallbackInfo& info);
-
-    Napi::Value GetBatteryCountWrapper(const Napi::CallbackInfo& info);
-    Napi::Value IsOnACWrapper(const Napi::CallbackInfo& info);
-
-    SMCKit *smcKit_;
+    SMCKit *smcKit;
 };
 
 #endif

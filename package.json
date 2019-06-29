@@ -39,10 +39,9 @@
         "ts-node": "^8.3.0",
         "tslint": "^5.18.0",
         "tslint-config-prettier": "^1.18.0",
-        "typedoc": "^0.14.2",
         "typescript": "^3.5.2"
     },
     "dependencies": {
-        "node-addon-api": "^1.6.3"
+        "nan": "^2.14.0"
     }
 }

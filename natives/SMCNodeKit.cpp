@@ -1,211 +1,277 @@
 #include "SMCNodeKit.h"
+#include <iostream>
 
-Napi::FunctionReference SMCNodeKit::constructor;
+Nan::Persistent<v8::FunctionTemplate> SMCNodeKit::constructor;
 
-Napi::Object SMCNodeKit::Init(Napi::Env env, Napi::Object exports){
-    Napi::HandleScope scope(env);
+NAN_MODULE_INIT(SMCNodeKit::Init)
+{
+    v8::Local<v8::FunctionTemplate> ctor = Nan::New<v8::FunctionTemplate>(SMCNodeKit::New);
+    constructor.Reset(ctor);
+    ctor->InstanceTemplate()->SetInternalFieldCount(1);
+    ctor->SetClassName(Nan::New("SMCNodeKit").ToLocalChecked());
 
-    Napi::Function func = DefineClass(env, "SMCNodeKit", {
-        InstanceMethod("open", &SMCNodeKit::OpenWrapper),
-        InstanceMethod("close", &SMCNodeKit::CloseWrapper),
-        InstanceMethod("getKeyInfo", &SMCNodeKit::GetKeyInfoWrapper),
-        InstanceMethod("getCPUTemp", &SMCNodeKit::GetCPUTempWrapper),
-        InstanceMethod("getFanCount", &SMCNodeKit::GetFanCountWrapper),
-        InstanceMethod("getFanMinSpeed", &SMCNodeKit::GetFanMinSpeedWrapper),
-        InstanceMethod("getFanMaxSpeed", &SMCNodeKit::GetFanMaxSpeedWrapper),
-        InstanceMethod("getCurrentFanSpeed", &SMCNodeKit::GetCurrentFanSpeedWrapper),
-        InstanceMethod("getBatteryCount", &SMCNodeKit::GetBatteryCountWrapper),
-        InstanceMethod("isOnAC", &SMCNodeKit::IsOnACWrapper)
-    });
+    Nan::SetPrototypeMethod(ctor, "open", OpenWrapper);
+    Nan::SetPrototypeMethod(ctor, "close", CloseWrapper);
+    Nan::SetPrototypeMethod(ctor, "getKeyInfo", GetKeyInfoWrapper);
+    Nan::SetPrototypeMethod(ctor, "getCpuTemp", GetCpuTempWrapper);
+    Nan::SetPrototypeMethod(ctor, "getFanCount", GetFanCountWrapper);
+    Nan::SetPrototypeMethod(ctor, "getMinFanSpeed", GetMinFanSpeedWrapper);
+    Nan::SetPrototypeMethod(ctor, "getMaxFanSpeed", GetMaxFanSpeedWrapper);
+    Nan::SetPrototypeMethod(ctor, "getCurrentFanSpeed", GetCurrentFanSpeedWrapper);
+    Nan::SetPrototypeMethod(ctor, "getBatteryCount", GetBatteryCountWrapper);
+    Nan::SetPrototypeMethod(ctor, "isOnAc", IsOnAcWrapper);
 
-    constructor = Napi::Persistent(func);
-    constructor.SuppressDestruct();
-
-    exports.Set("SMCNodeKit", func);
-    return exports;
+    Nan::Set(target, Nan::New("SMCNodeKit").ToLocalChecked(), Nan::GetFunction(ctor).ToLocalChecked());
 }
 
-SMCNodeKit::SMCNodeKit(const Napi::CallbackInfo& info) : Napi::ObjectWrap<SMCNodeKit>(info) {
-    Napi::Env env = info.Env();
-    Napi::HandleScope scope(env);
-
-    if(info.Length() != 0) {
-        Napi::TypeError::New(env, "No arguments expected").ThrowAsJavaScriptException();
+NAN_METHOD(SMCNodeKit::New)
+{
+    // if there were arguments given throw an exception
+    if (info.Length() != 0)
+    {
+        Nan::ThrowError(Nan::New("No arguments expected").ToLocalChecked());
     }
 
-    this->smcKit_ = new SMCKit();
+    // create the instance and wrap it
+    SMCNodeKit *nodeKit = new SMCNodeKit();
+    nodeKit->Wrap(info.Holder());
+
+    // create an SMCKit instance
+    nodeKit->smcKit = new SMCKit();
+
+    info.GetReturnValue().Set(info.Holder());
 }
 
-void SMCNodeKit::OpenWrapper(const Napi::CallbackInfo& info) {
-    Napi::Env env = info.Env();
-    Napi::HandleScope scope(env);
+NAN_METHOD(SMCNodeKit::OpenWrapper)
+{
+    // unwrap the instance
+    SMCNodeKit *self = Nan::ObjectWrap::Unwrap<SMCNodeKit>(info.This());
 
-    if(info.Length() != 0) {
-        Napi::TypeError::New(env, "No arguments expected").ThrowAsJavaScriptException();
+    if (info.Length() != 0)
+    {
+        return Nan::ThrowError(Nan::New("No arguments expected").ToLocalChecked());
     }
 
-    try {
-        this->smcKit_->open();
+    try
+    {
+        self->smcKit->open();
         return;
-    } catch(const std::runtime_error& e) {
-        throw Napi::Error::New(env, e.what());
+    }
+    catch (const std::runtime_error &e)
+    {
+        return Nan::ThrowError(Nan::New(e.what()).ToLocalChecked());
     }
 }
 
-void SMCNodeKit::CloseWrapper(const Napi::CallbackInfo& info) {
-    Napi::Env env = info.Env();
-    Napi::HandleScope scope(env);
+NAN_METHOD(SMCNodeKit::CloseWrapper)
+{
+    // unwrap the instance
+    SMCNodeKit *self = Nan::ObjectWrap::Unwrap<SMCNodeKit>(info.This());
 
-    if(info.Length() != 0) {
-        Napi::TypeError::New(env, "No arguments expected").ThrowAsJavaScriptException();
+    if (info.Length() != 0)
+    {
+        return Nan::ThrowError(Nan::New("No arguments expected").ToLocalChecked());
     }
 
-    try {
-        this->smcKit_->close();
-    } catch(const std::runtime_error& e) {
-        throw Napi::Error::New(env, e.what());
+    try
+    {
+        self->smcKit->close();
+        return;
+    }
+    catch (const std::runtime_error &e)
+    {
+        return Nan::ThrowError(Nan::New(e.what()).ToLocalChecked());
     }
 }
 
-Napi::Value SMCNodeKit::GetKeyInfoWrapper(const Napi::CallbackInfo& info) {
-    Napi::Env env = info.Env();
-    Napi::HandleScope scope(env);
+NAN_METHOD(SMCNodeKit::GetKeyInfoWrapper)
+{
+    // unwrap the instance
+    SMCNodeKit *self = Nan::ObjectWrap::Unwrap<SMCNodeKit>(info.This());
 
-    if(info.Length() != 1 || !info[0].IsString()) {
-        Napi::TypeError::New(env, "Expected a SMC key").ThrowAsJavaScriptException();
+    if (info.Length() != 1 || !info[0]->IsString())
+    {
+        return Nan::ThrowError(Nan::New("Expected a SMC key").ToLocalChecked());
     }
 
-    Napi::String givenKey = info[0].As<Napi::String>();
-    DataType keyInfo = this->smcKit_->getKeyInfo(givenKey);
-    Napi::String fourCharCode = Napi::String::New(env, Utils::fourCharCodeToString(keyInfo.type));
-    Napi::Number size = Napi::Number::New(env, keyInfo.size);
+    v8::Local<v8::Context> context = Nan::GetCurrentContext();
+
+    DataType keyInfo = self->smcKit->getKeyInfo(std::string(*Nan::Utf8String(info[0]->ToString(context).ToLocalChecked())));
+    v8::Local<v8::String> fourCharCode = v8::String::NewFromUtf8(
+                                             context->GetIsolate(),
+                                             Utils::fourCharCodeToString(keyInfo.type).c_str(),
+                                             v8::NewStringType::kNormal)
+                                             .ToLocalChecked();
+    v8::Local<v8::Value> size = Nan::New(keyInfo.size);
 
     // create the return object and assign the values
-    Napi::Object returnObject = Napi::Object::New(env);
-    returnObject.Set("type", fourCharCode);
-    returnObject.Set("size", size);
+    v8::Local<v8::Object> returnObject = v8::Object::New(context->GetIsolate());
+    bool setType = returnObject->Set(
+                                   context,
+                                   v8::String::NewFromUtf8(context->GetIsolate(), "type", v8::NewStringType::kNormal).ToLocalChecked(),
+                                   fourCharCode)
+                       .FromMaybe(false);
+    bool setSize = returnObject->Set(
+                                   context,
+                                   v8::String::NewFromUtf8(context->GetIsolate(), "size", v8::NewStringType::kNormal).ToLocalChecked(),
+                                   size)
+                       .FromMaybe(false);
 
-    return returnObject;
+    if (!setType || !setSize)
+    {
+        // if it failed to set the values throw an exception
+        return Nan::ThrowError(Nan::New("Failed to create the return object").ToLocalChecked());
+    }
+
+    info.GetReturnValue().Set(returnObject);
 }
 
-Napi::Value SMCNodeKit::GetCPUTempWrapper(const Napi::CallbackInfo& info) {
-    Napi::Env env = info.Env();
-    Napi::HandleScope scope(env);
+NAN_METHOD(SMCNodeKit::GetCpuTempWrapper)
+{
+    // unwrap the instance
+    SMCNodeKit *self = Nan::ObjectWrap::Unwrap<SMCNodeKit>(info.This());
 
-    if(info.Length() != 0) {
-        Napi::TypeError::New(env, "No arguments expected").ThrowAsJavaScriptException();
+    if (info.Length() != 0)
+    {
+        return Nan::ThrowError(Nan::New("No arguments expected").ToLocalChecked());
     }
 
-    try {
-        int cpuTemp = this->smcKit_->getCPUTemp();
-        return Napi::Number::New(env, cpuTemp);
-    } catch (const std::runtime_error& e) {
-        throw Napi::Error::New(env, e.what());
+    try
+    {
+        info.GetReturnValue().Set(self->smcKit->getCPUTemp());
+        return;
     }
-}
-
-Napi::Value SMCNodeKit::GetFanCountWrapper(const Napi::CallbackInfo& info) {
-    Napi::Env env = info.Env();
-    Napi::HandleScope scope(env);
-
-    if(info.Length() != 0) {
-        Napi::TypeError::New(env, "No arguments expected").ThrowAsJavaScriptException();
-    }
-
-    try {
-        int fanCount = this->smcKit_->getFanCount();
-        return Napi::Number::New(env, fanCount);
-    } catch (const std::runtime_error& e) {
-        throw Napi::Error::New(env, e.what());
-    }
-}
-
-Napi::Value SMCNodeKit::GetFanMinSpeedWrapper(const Napi::CallbackInfo& info) {
-    Napi::Env env = info.Env();
-    Napi::HandleScope scope(env);
-
-    if(info.Length() != 1 || !info[0].IsNumber()) {
-        Napi::TypeError::New(env, "Expected the id of the fan").ThrowAsJavaScriptException();
-    }
-
-    Napi::Number fanId = Napi::Number::New(env, info[0].As<Napi::Number>());
-
-    try {
-        int minFanSpeed = this->smcKit_->getMinFanSpeed(fanId.Int32Value());
-        return Napi::Number::New(env, minFanSpeed);
-    } catch (const std::runtime_error& e) {
-        throw Napi::Error::New(env, e.what());
+    catch (const std::runtime_error &e)
+    {
+        return Nan::ThrowError(Nan::New(e.what()).ToLocalChecked());
     }
 }
 
-Napi::Value SMCNodeKit::GetFanMaxSpeedWrapper(const Napi::CallbackInfo& info) {
-    Napi::Env env = info.Env();
-    Napi::HandleScope scope(env);
+NAN_METHOD(SMCNodeKit::GetFanCountWrapper)
+{
+    // unwrap the instance
+    SMCNodeKit *self = Nan::ObjectWrap::Unwrap<SMCNodeKit>(info.This());
 
-    if(info.Length() != 1 || !info[0].IsNumber()) {
-        Napi::TypeError::New(env, "Expected the id of the fan").ThrowAsJavaScriptException();
+    if (info.Length() != 0)
+    {
+        return Nan::ThrowError(Nan::New("No arguments expected").ToLocalChecked());
     }
 
-    Napi::Number fanId = Napi::Number::New(env, info[0].As<Napi::Number>());
-
-    try {
-        int maxFanSpeed = this->smcKit_->getMaxFanSpeed(fanId.Int32Value());
-        return Napi::Number::New(env, maxFanSpeed);
-    } catch (const std::runtime_error& e) {
-        throw Napi::Error::New(env, e.what());
+    try
+    {
+        info.GetReturnValue().Set(self->smcKit->getFanCount());
+        return;
     }
-}
-
-Napi::Value SMCNodeKit::GetCurrentFanSpeedWrapper(const Napi::CallbackInfo& info) {
-    Napi::Env env = info.Env();
-    Napi::HandleScope scope(env);
-
-    if(info.Length() != 1 || !info[0].IsNumber()) {
-        Napi::TypeError::New(env, "Expected the id of the fan").ThrowAsJavaScriptException();
-    }
-
-    Napi::Number fanId = Napi::Number::New(env, info[0].As<Napi::Number>());
-
-    try {
-        int currentFanSpeed = this->smcKit_->getCurrentFanSpeed(fanId.Int32Value());
-        return Napi::Number::New(env, currentFanSpeed);
-    } catch (const std::runtime_error& e) {
-        throw Napi::Error::New(env, e.what());
+    catch (const std::runtime_error &e)
+    {
+        return Nan::ThrowError(Nan::New(e.what()).ToLocalChecked());
     }
 }
 
-Napi::Value SMCNodeKit::GetBatteryCountWrapper(const Napi::CallbackInfo& info) {
-    Napi::Env env = info.Env();
-    Napi::HandleScope scope(env);
+NAN_METHOD(SMCNodeKit::GetMinFanSpeedWrapper)
+{
+    // unwrap the instance
+    SMCNodeKit *self = Nan::ObjectWrap::Unwrap<SMCNodeKit>(info.This());
 
-    if(info.Length() != 0) {
-        Napi::TypeError::New(env, "No arguments expected").ThrowAsJavaScriptException();
+    if (info.Length() == 0 || !info[0]->IsNumber())
+    {
+        return Nan::ThrowError(Nan::New("Expected the id of the fan").ToLocalChecked());
     }
 
-    try {
-        int batteryCount = this->smcKit_->getBatteryCount();
-        return Napi::Number::New(env, batteryCount);
-    } catch (const std::runtime_error& e) {
-        throw Napi::Error::New(env, e.what());
+    try
+    {
+        int fanId = info[0]->IntegerValue(Nan::GetCurrentContext()).FromMaybe(-1);
+        info.GetReturnValue().Set(self->smcKit->getMinFanSpeed(fanId));
+        return;
     }
-}
-
-Napi::Value SMCNodeKit::IsOnACWrapper(const Napi::CallbackInfo& info) {
-    Napi::Env env = info.Env();
-    Napi::HandleScope scope(env);
-
-    if(info.Length() != 0) {
-        Napi::TypeError::New(env, "No arguments expected").ThrowAsJavaScriptException();
-    }
-
-    try {
-        bool onAc = this->smcKit_->isOnAC();
-        return Napi::Boolean::New(env, onAc);
-    } catch (const std::runtime_error& e) {
-        throw Napi::Error::New(env, e.what());
+    catch (const std::runtime_error &e)
+    {
+        return Nan::ThrowError(Nan::New(e.what()).ToLocalChecked());
     }
 }
 
-SMCKit* SMCNodeKit::GetInternalInstance() {
-    return this->smcKit_;
+NAN_METHOD(SMCNodeKit::GetMaxFanSpeedWrapper)
+{
+    // unwrap the instance
+    SMCNodeKit *self = Nan::ObjectWrap::Unwrap<SMCNodeKit>(info.This());
+
+    if (info.Length() == 0 || !info[0]->IsNumber())
+    {
+        return Nan::ThrowError(Nan::New("Expected the id of the fan").ToLocalChecked());
+    }
+
+    try
+    {
+        int fanId = info[0]->IntegerValue(Nan::GetCurrentContext()).FromMaybe(-1);
+        info.GetReturnValue().Set(self->smcKit->getMaxFanSpeed(fanId));
+        return;
+    }
+    catch (const std::runtime_error &e)
+    {
+        return Nan::ThrowError(Nan::New(e.what()).ToLocalChecked());
+    }
+}
+
+NAN_METHOD(SMCNodeKit::GetCurrentFanSpeedWrapper)
+{
+    // unwrap the instance
+    SMCNodeKit *self = Nan::ObjectWrap::Unwrap<SMCNodeKit>(info.This());
+
+    if (info.Length() == 0 || !info[0]->IsNumber())
+    {
+        return Nan::ThrowError(Nan::New("Expected the id of the fan").ToLocalChecked());
+    }
+
+    try
+    {
+        int fanId = info[0]->IntegerValue(Nan::GetCurrentContext()).FromMaybe(-1);
+        info.GetReturnValue().Set(self->smcKit->getCurrentFanSpeed(fanId));
+        return;
+    }
+    catch (const std::runtime_error &e)
+    {
+        return Nan::ThrowError(Nan::New(e.what()).ToLocalChecked());
+    }
+}
+
+NAN_METHOD(SMCNodeKit::GetBatteryCountWrapper)
+{
+    // unwrap the instance
+    SMCNodeKit *self = Nan::ObjectWrap::Unwrap<SMCNodeKit>(info.This());
+
+    if (info.Length() != 0)
+    {
+        return Nan::ThrowError(Nan::New("No arguments expected").ToLocalChecked());
+    }
+
+    try
+    {
+        info.GetReturnValue().Set(self->smcKit->getBatteryCount());
+        return;
+    }
+    catch (const std::runtime_error &e)
+    {
+        return Nan::ThrowError(Nan::New(e.what()).ToLocalChecked());
+    }
+}
+
+NAN_METHOD(SMCNodeKit::IsOnAcWrapper)
+{
+    // unwrap the instance
+    SMCNodeKit *self = Nan::ObjectWrap::Unwrap<SMCNodeKit>(info.This());
+
+    if (info.Length() != 0)
+    {
+        return Nan::ThrowError(Nan::New("No arguments expected").ToLocalChecked());
+    }
+
+    try
+    {
+        info.GetReturnValue().Set(self->smcKit->isOnAC());
+        return;
+    }
+    catch (const std::runtime_error &e)
+    {
+        return Nan::ThrowError(Nan::New(e.what()).ToLocalChecked());
+    }
 }
