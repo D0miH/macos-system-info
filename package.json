@@ -19,7 +19,7 @@
     "files": [
         "lib/**/*",
         "natives/**/",
-        "./binding.gyp"
+        "binding.gyp"
     ],
     "repository": {
         "type": "git",
