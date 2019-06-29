@@ -1,13 +1,14 @@
 {
     "name": "smc-node-kit",
     "version": "0.1.4",
-    "description": "Node bindings to communicate with the Apple SMC.",
+    "description": "Node.js bindings to communicate with the Apple SMC.",
     "main": "lib/src/index.js",
     "types": "lib/src/index.d.ts",
     "scripts": {
         "build-natives": "node-pre-gyp install --fallback-to-build",
         "build": "tsc",
-        "install": "npm run build-natives && npm run build"
+        "install": "npm run build-natives && npm run build",
+        "prepare": "npm run build"
     },
     "binary": {
         "module_name": "smc-node-kit",
