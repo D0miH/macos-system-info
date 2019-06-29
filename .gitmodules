@@ -1,0 +1,3 @@
+[submodule "natives/SMCPPKit"]
+	path = natives/SMCPPKit
+	url = https://github.com/D0miH/SMCNodeKit.git
