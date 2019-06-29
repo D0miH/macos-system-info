@@ -2,15 +2,18 @@
     "name": "smc-node-kit",
     "version": "0.1.4",
     "description": "Node bindings to communicate with the Apple SMC.",
-    "main": "lib/index.js",
-    "types": "lib/index.d.ts",
+    "main": "lib/src/index.js",
+    "types": "lib/src/index.d.ts",
     "scripts": {
-        "build-natives": "node-gyp -j 12 rebuild",
-        "build": "npm run build-natives && tsc",
-        "rebuild:dev": "node-gyp -j 12 rebuild --debug",
-        "rebuild": "node-gyp -j 12 rebuild",
-        "clean": "node-gyp clean",
-        "prepare": "npm run build"
+        "build-natives": "node-pre-gyp install --fallback-to-build",
+        "build": "tsc",
+        "install": "npm run build-natives && npm run build"
+    },
+    "binary": {
+        "module_name": "smc-node-kit",
+        "module_path": "./lib/binding/",
+        "host": "https://github.com/D0miH/SMCNodeKit/releases/download/",
+        "remote_path": "{version}"
     },
     "gypfile": true,
     "files": [
@@ -34,6 +37,8 @@
     },
     "homepage": "https://github.com/D0miH/SMCNodeKit#readme",
     "devDependencies": {
+        "@types/node": "^12.0.10",
+        "aws-sdk": "^2.485.0",
         "node-gyp": "^5.0.0",
         "prettier": "^1.18.2",
         "ts-node": "^8.3.0",
@@ -42,6 +47,7 @@
         "typescript": "^3.5.2"
     },
     "dependencies": {
-        "nan": "^2.14.0"
+        "nan": "^2.14.0",
+        "node-pre-gyp": "^0.13.0"
     }
 }

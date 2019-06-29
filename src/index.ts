@@ -1,3 +1,3 @@
-const { SMCNodeKit } = require('../build/Release/smcnodekit.node');
+const binding = require('../binding/smc-node-kit.node');
 
-export default SMCNodeKit;
+export default binding.SMCNodeKit;
