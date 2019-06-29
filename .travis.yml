@@ -7,6 +7,7 @@ node_js:
     - stable
 
 install:
+    - npm install
     - npm install node-pre-gyp node-pre-gyp-github -g
 
 script: node-pre-gyp install --build-from-source
