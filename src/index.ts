@@ -1,3 +1,4 @@
+/** @hidden */
 const binding = require('../binding/smc-node-kit.node');
 
 export interface IKeyInfo {
