@@ -191,12 +191,12 @@ NAN_METHOD(SMCNodeKit::GetMinFanSpeedWrapper)
 
         // check if the fan id is out of bound
         int fanCount = self->smcKit->getFanCount();
-        if (fanCount < fanId)
+        if (fanCount <= fanId)
         {
             throw std::runtime_error(
                 std::string("Fan ID is too high. This machine has only ") +
                 std::to_string(fanCount) +
-                std::string(" fans"));
+                std::string(" fans."));
         }
 
         info.GetReturnValue().Set(self->smcKit->getMinFanSpeed(fanId));
@@ -224,12 +224,12 @@ NAN_METHOD(SMCNodeKit::GetMaxFanSpeedWrapper)
 
         // check if the fan id is out of bound
         int fanCount = self->smcKit->getFanCount();
-        if (fanCount < fanId)
+        if (fanCount <= fanId)
         {
             throw std::runtime_error(
                 std::string("Fan ID is too high. This machine has only ") +
                 std::to_string(fanCount) +
-                std::string(" fans"));
+                std::string(" fans."));
         }
 
         info.GetReturnValue().Set(self->smcKit->getMaxFanSpeed(fanId));
@@ -257,12 +257,12 @@ NAN_METHOD(SMCNodeKit::GetCurrentFanSpeedWrapper)
 
         // check if the fan id is out of bound
         int fanCount = self->smcKit->getFanCount();
-        if (fanCount < fanId)
+        if (fanCount <= fanId)
         {
             throw std::runtime_error(
                 std::string("Fan ID is too high. This machine has only ") +
                 std::to_string(fanCount) +
-                std::string(" fans"));
+                std::string(" fans."));
         }
 
         info.GetReturnValue().Set(self->smcKit->getCurrentFanSpeed(fanId));
