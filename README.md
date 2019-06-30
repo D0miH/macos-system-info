@@ -16,6 +16,10 @@ or
 yarn add smc-node-kit
 ```
 
+## Documentation
+
+You can find the documentation [here](https://d0mih.github.io/smc-node-kit/).
+
 ## Usage
 
 This little code snipped shows how to read the current CPU temperature:
@@ -26,6 +30,23 @@ const { SMCNodeKit } = require('smc-node-kit');
 
 // create a new instance of the class and open the connection to the SMC
 const smcKit = new SMCNodeKit();
+smcKit.open();
+
+// read the cpu temperature
+console.log(smcKit.getCpuTemp());
+
+// close the connection to the SMC
+smcKit.close();
+```
+
+If you are using typescript you can use named imports:
+
+```javascript
+// import the class
+import { SMCNodeKit } from 'smc-node-kit';
+
+// create a new instance of the class and open the connection to the SMC
+const smcKit: SMCNodeKit = new SMCNodeKit();
 smcKit.open();
 
 // read the cpu temperature
