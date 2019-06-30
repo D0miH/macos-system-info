@@ -71,6 +71,8 @@
 				<pre><code class="language-sh">npm install smc-node-kit</code></pre>
 				<p>or</p>
 				<pre><code class="language-sh">yarn add smc-node-kit</code></pre>
+				<h2 id="documentation">Documentation</h2>
+				<p>You can find the documentation <a href="https://d0mih.github.io/smc-node-kit/">here</a>.</p>
 				<h2 id="usage">Usage</h2>
 				<p>This little code snipped shows how to read the current CPU temperature:</p>
 				<pre><code class="language-javascript"><span class="hljs-comment">// import the class</span>
@@ -78,6 +80,19 @@
 
 <span class="hljs-comment">// create a new instance of the class and open the connection to the SMC</span>
 <span class="hljs-keyword">const</span> smcKit = <span class="hljs-keyword">new</span> SMCNodeKit();
+smcKit.open();
+
+<span class="hljs-comment">// read the cpu temperature</span>
+<span class="hljs-built_in">console</span>.log(smcKit.getCpuTemp());
+
+<span class="hljs-comment">// close the connection to the SMC</span>
+smcKit.close();</code></pre>
+				<p>If you are using typescript you can use named imports:</p>
+				<pre><code class="language-javascript"><span class="hljs-comment">// import the class</span>
+<span class="hljs-keyword">import</span> { SMCNodeKit } <span class="hljs-keyword">from</span> <span class="hljs-string">'smc-node-kit'</span>;
+
+<span class="hljs-comment">// create a new instance of the class and open the connection to the SMC</span>
+<span class="hljs-keyword">const</span> smcKit: SMCNodeKit = <span class="hljs-keyword">new</span> SMCNodeKit();
 smcKit.open();
 
 <span class="hljs-comment">// read the cpu temperature</span>
