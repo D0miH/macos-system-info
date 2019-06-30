@@ -105,32 +105,32 @@ NAN_METHOD(SMCNodeKit::GetKeyInfoWrapper)
                                                  v8::NewStringType::kNormal)
                                                  .ToLocalChecked();
         v8::Local<v8::Value> size = Nan::New(keyInfo.size);
+
+        // create the return object and assign the values
+        v8::Local<v8::Object> returnObject = v8::Object::New(context->GetIsolate());
+        bool setType = returnObject->Set(
+                                       context,
+                                       v8::String::NewFromUtf8(context->GetIsolate(), "type", v8::NewStringType::kNormal).ToLocalChecked(),
+                                       fourCharCode)
+                           .FromMaybe(false);
+        bool setSize = returnObject->Set(
+                                       context,
+                                       v8::String::NewFromUtf8(context->GetIsolate(), "size", v8::NewStringType::kNormal).ToLocalChecked(),
+                                       size)
+                           .FromMaybe(false);
+
+        if (!setType || !setSize)
+        {
+            // if it failed to set the values throw an exception
+            return Nan::ThrowError(Nan::New("Failed to create the return object").ToLocalChecked());
+        }
+
+        info.GetReturnValue().Set(returnObject);
     }
     catch (const std::runtime_error &e)
     {
         return Nan::ThrowError(Nan::New(e.what()).ToLocalChecked());
     }
-
-    // create the return object and assign the values
-    v8::Local<v8::Object> returnObject = v8::Object::New(context->GetIsolate());
-    bool setType = returnObject->Set(
-                                   context,
-                                   v8::String::NewFromUtf8(context->GetIsolate(), "type", v8::NewStringType::kNormal).ToLocalChecked(),
-                                   fourCharCode)
-                       .FromMaybe(false);
-    bool setSize = returnObject->Set(
-                                   context,
-                                   v8::String::NewFromUtf8(context->GetIsolate(), "size", v8::NewStringType::kNormal).ToLocalChecked(),
-                                   size)
-                       .FromMaybe(false);
-
-    if (!setType || !setSize)
-    {
-        // if it failed to set the values throw an exception
-        return Nan::ThrowError(Nan::New("Failed to create the return object").ToLocalChecked());
-    }
-
-    info.GetReturnValue().Set(returnObject);
 }
 
 NAN_METHOD(SMCNodeKit::GetCpuTempWrapper)
@@ -193,7 +193,10 @@ NAN_METHOD(SMCNodeKit::GetMinFanSpeedWrapper)
         int fanCount = self->smcKit->getFanCount();
         if (fanCount < fanId)
         {
-            throw runtime_error("Fan ID is too high. This machine has only " + fanCount + " fans")
+            throw std::runtime_error(
+                std::string("Fan ID is too high. This machine has only ") +
+                std::to_string(fanCount) +
+                std::string(" fans"));
         }
 
         info.GetReturnValue().Set(self->smcKit->getMinFanSpeed(fanId));
@@ -223,7 +226,10 @@ NAN_METHOD(SMCNodeKit::GetMaxFanSpeedWrapper)
         int fanCount = self->smcKit->getFanCount();
         if (fanCount < fanId)
         {
-            throw runtime_error("Fan ID is too high. This machine has only " + fanCount + " fans")
+            throw std::runtime_error(
+                std::string("Fan ID is too high. This machine has only ") +
+                std::to_string(fanCount) +
+                std::string(" fans"));
         }
 
         info.GetReturnValue().Set(self->smcKit->getMaxFanSpeed(fanId));
@@ -253,7 +259,10 @@ NAN_METHOD(SMCNodeKit::GetCurrentFanSpeedWrapper)
         int fanCount = self->smcKit->getFanCount();
         if (fanCount < fanId)
         {
-            throw runtime_error("Fan ID is too high. This machine has only " + fanCount + " fans")
+            throw std::runtime_error(
+                std::string("Fan ID is too high. This machine has only ") +
+                std::to_string(fanCount) +
+                std::string(" fans"));
         }
 
         info.GetReturnValue().Set(self->smcKit->getCurrentFanSpeed(fanId));
