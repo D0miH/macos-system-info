@@ -96,13 +96,20 @@ NAN_METHOD(SMCNodeKit::GetKeyInfoWrapper)
 
     v8::Local<v8::Context> context = Nan::GetCurrentContext();
 
-    DataType keyInfo = self->smcKit->getKeyInfo(std::string(*Nan::Utf8String(info[0]->ToString(context).ToLocalChecked())));
-    v8::Local<v8::String> fourCharCode = v8::String::NewFromUtf8(
-                                             context->GetIsolate(),
-                                             Utils::fourCharCodeToString(keyInfo.type).c_str(),
-                                             v8::NewStringType::kNormal)
-                                             .ToLocalChecked();
-    v8::Local<v8::Value> size = Nan::New(keyInfo.size);
+    try
+    {
+        DataType keyInfo = self->smcKit->getKeyInfo(std::string(*Nan::Utf8String(info[0]->ToString(context).ToLocalChecked())));
+        v8::Local<v8::String> fourCharCode = v8::String::NewFromUtf8(
+                                                 context->GetIsolate(),
+                                                 Utils::fourCharCodeToString(keyInfo.type).c_str(),
+                                                 v8::NewStringType::kNormal)
+                                                 .ToLocalChecked();
+        v8::Local<v8::Value> size = Nan::New(keyInfo.size);
+    }
+    catch (const std::runtime_error &e)
+    {
+        return Nan::ThrowError(Nan::New(e.what()).ToLocalChecked());
+    }
 
     // create the return object and assign the values
     v8::Local<v8::Object> returnObject = v8::Object::New(context->GetIsolate());
