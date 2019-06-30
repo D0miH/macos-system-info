@@ -5,7 +5,7 @@
     "main": "lib/src/index.js",
     "types": "lib/src/index.d.ts",
     "scripts": {
-        "build-ts": "tsc",
+        "build-ts": "tsc && typedoc --out docs ./src/index.ts",
         "install": "node-pre-gyp install --update-binary --fallback-to-build",
         "publish-binary": "node-pre-gyp configure && node-pre-gyp build && node-pre-gyp package && node-pre-gyp-github publish --release",
         "prepare": "npm run build-ts",
@@ -47,6 +47,7 @@
         "ts-node": "^8.3.0",
         "tslint": "^5.18.0",
         "tslint-config-prettier": "^1.18.0",
+        "typedoc": "^0.14.2",
         "typescript": "^3.5.2"
     },
     "dependencies": {
