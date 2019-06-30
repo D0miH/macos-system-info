@@ -6,7 +6,7 @@
     "types": "lib/src/index.d.ts",
     "scripts": {
         "build-ts": "tsc",
-        "install": "node-pre-gyp install --fallback-to-build",
+        "install": "node-pre-gyp install --update-binary --fallback-to-build",
         "publish-binary": "node-pre-gyp configure && node-pre-gyp build && node-pre-gyp package && node-pre-gyp-github publish --release",
         "prepare": "npm run build-ts",
         "prepublishOnly": "npm run publish-binary"
