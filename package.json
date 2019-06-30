@@ -1,6 +1,6 @@
 {
     "name": "smc-node-kit",
-    "version": "1.0.7",
+    "version": "1.0.8",
     "description": "Node.js bindings to communicate with the Apple SMC.",
     "main": "lib/src/index.js",
     "types": "lib/src/index.d.ts",
