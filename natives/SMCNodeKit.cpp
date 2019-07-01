@@ -19,7 +19,7 @@ NAN_MODULE_INIT(SMCNodeKit::Init)
     Nan::SetPrototypeMethod(ctor, "getMaxFanSpeed", GetMaxFanSpeedWrapper);
     Nan::SetPrototypeMethod(ctor, "getCurrentFanSpeed", GetCurrentFanSpeedWrapper);
     Nan::SetPrototypeMethod(ctor, "getBatteryCount", GetBatteryCountWrapper);
-    Nan::SetPrototypeMethod(ctor, "isOnAc", IsOnAcWrapper);
+    Nan::SetPrototypeMethod(ctor, "isChargingBattery", IsChargingBatterWrapper);
 
     Nan::Set(target, Nan::New("SMCNodeKit").ToLocalChecked(), Nan::GetFunction(ctor).ToLocalChecked());
 }
@@ -295,7 +295,7 @@ NAN_METHOD(SMCNodeKit::GetBatteryCountWrapper)
     }
 }
 
-NAN_METHOD(SMCNodeKit::IsOnAcWrapper)
+NAN_METHOD(SMCNodeKit::IsChargingBatteryWrapper)
 {
     // unwrap the instance
     SMCNodeKit *self = Nan::ObjectWrap::Unwrap<SMCNodeKit>(info.This());
@@ -307,7 +307,7 @@ NAN_METHOD(SMCNodeKit::IsOnAcWrapper)
 
     try
     {
-        info.GetReturnValue().Set(self->smcKit->isOnAC());
+        info.GetReturnValue().Set(self->smcKit->isChargingBattery());
         return;
     }
     catch (const std::runtime_error &e)
