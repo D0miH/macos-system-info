@@ -19,7 +19,7 @@ NAN_MODULE_INIT(SMCNodeKit::Init)
     Nan::SetPrototypeMethod(ctor, "getMaxFanSpeed", GetMaxFanSpeedWrapper);
     Nan::SetPrototypeMethod(ctor, "getCurrentFanSpeed", GetCurrentFanSpeedWrapper);
     Nan::SetPrototypeMethod(ctor, "getBatteryCount", GetBatteryCountWrapper);
-    Nan::SetPrototypeMethod(ctor, "isChargingBattery", IsChargingBatterWrapper);
+    Nan::SetPrototypeMethod(ctor, "isChargingBattery", IsChargingBatteryWrapper);
 
     Nan::Set(target, Nan::New("SMCNodeKit").ToLocalChecked(), Nan::GetFunction(ctor).ToLocalChecked());
 }

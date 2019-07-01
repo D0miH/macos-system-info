@@ -25,7 +25,7 @@ public:
     static NAN_METHOD(GetCurrentFanSpeedWrapper);
 
     static NAN_METHOD(GetBatteryCountWrapper);
-    static NAN_METHOD(IsChargingBatterWrapper);
+    static NAN_METHOD(IsChargingBatteryWrapper);
 
 private:
     SMCKit *smcKit;
