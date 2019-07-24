@@ -95,6 +95,8 @@
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="smcnodekit.html#close" class="tsd-kind-icon">close</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="smcnodekit.html#getbatterycount" class="tsd-kind-icon">get<wbr>Battery<wbr>Count</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="smcnodekit.html#getbatterycycles" class="tsd-kind-icon">get<wbr>Battery<wbr>Cycles</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="smcnodekit.html#getbatteryhealth" class="tsd-kind-icon">get<wbr>Battery<wbr>Health</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="smcnodekit.html#getcputemp" class="tsd-kind-icon">get<wbr>Cpu<wbr>Temp</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="smcnodekit.html#getcurrentfanspeed" class="tsd-kind-icon">get<wbr>Current<wbr>Fan<wbr>Speed</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="smcnodekit.html#getfancount" class="tsd-kind-icon">get<wbr>Fan<wbr>Count</a></li>
@@ -120,7 +122,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/D0miH/smc-node-kit/blob/2bffb27/src/index.ts#L10">index.ts:10</a></li>
+									<li>Defined in <a href="https://github.com/D0miH/smc-node-kit/blob/965821b/src/index.ts#L10">index.ts:10</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <a href="smcnodekit.html" class="tsd-signature-type">SMCNodeKit</a></h4>
@@ -136,7 +138,7 @@
 					<div class="tsd-signature tsd-kind-icon">smc<wbr>Kit<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">any</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/D0miH/smc-node-kit/blob/2bffb27/src/index.ts#L10">index.ts:10</a></li>
+							<li>Defined in <a href="https://github.com/D0miH/smc-node-kit/blob/965821b/src/index.ts#L10">index.ts:10</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -153,7 +155,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/D0miH/smc-node-kit/blob/2bffb27/src/index.ts#L26">index.ts:26</a></li>
+									<li>Defined in <a href="https://github.com/D0miH/smc-node-kit/blob/965821b/src/index.ts#L26">index.ts:26</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -175,12 +177,56 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/D0miH/smc-node-kit/blob/2bffb27/src/index.ts#L79">index.ts:79</a></li>
+									<li>Defined in <a href="https://github.com/D0miH/smc-node-kit/blob/965821b/src/index.ts#L79">index.ts:79</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
 									<p>Returns the number of batteries.</p>
+								</div>
+							</div>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="getbatterycycles" class="tsd-anchor"></a>
+					<h3>get<wbr>Battery<wbr>Cycles</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">get<wbr>Battery<wbr>Cycles<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/D0miH/smc-node-kit/blob/965821b/src/index.ts#L100">index.ts:100</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Returns the cycles of the battery.</p>
+								</div>
+							</div>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="getbatteryhealth" class="tsd-anchor"></a>
+					<h3>get<wbr>Battery<wbr>Health</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">get<wbr>Battery<wbr>Health<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/D0miH/smc-node-kit/blob/965821b/src/index.ts#L93">index.ts:93</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Returns the health of the battery in percent.</p>
 								</div>
 							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4>
@@ -197,7 +243,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/D0miH/smc-node-kit/blob/2bffb27/src/index.ts#L41">index.ts:41</a></li>
+									<li>Defined in <a href="https://github.com/D0miH/smc-node-kit/blob/965821b/src/index.ts#L41">index.ts:41</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -219,7 +265,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/D0miH/smc-node-kit/blob/2bffb27/src/index.ts#L72">index.ts:72</a></li>
+									<li>Defined in <a href="https://github.com/D0miH/smc-node-kit/blob/965821b/src/index.ts#L72">index.ts:72</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -250,7 +296,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/D0miH/smc-node-kit/blob/2bffb27/src/index.ts#L48">index.ts:48</a></li>
+									<li>Defined in <a href="https://github.com/D0miH/smc-node-kit/blob/965821b/src/index.ts#L48">index.ts:48</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -272,7 +318,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/D0miH/smc-node-kit/blob/2bffb27/src/index.ts#L34">index.ts:34</a></li>
+									<li>Defined in <a href="https://github.com/D0miH/smc-node-kit/blob/965821b/src/index.ts#L34">index.ts:34</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -303,7 +349,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/D0miH/smc-node-kit/blob/2bffb27/src/index.ts#L64">index.ts:64</a></li>
+									<li>Defined in <a href="https://github.com/D0miH/smc-node-kit/blob/965821b/src/index.ts#L64">index.ts:64</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -334,7 +380,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/D0miH/smc-node-kit/blob/2bffb27/src/index.ts#L56">index.ts:56</a></li>
+									<li>Defined in <a href="https://github.com/D0miH/smc-node-kit/blob/965821b/src/index.ts#L56">index.ts:56</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -365,7 +411,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/D0miH/smc-node-kit/blob/2bffb27/src/index.ts#L86">index.ts:86</a></li>
+									<li>Defined in <a href="https://github.com/D0miH/smc-node-kit/blob/965821b/src/index.ts#L86">index.ts:86</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -387,7 +433,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/D0miH/smc-node-kit/blob/2bffb27/src/index.ts#L19">index.ts:19</a></li>
+									<li>Defined in <a href="https://github.com/D0miH/smc-node-kit/blob/965821b/src/index.ts#L19">index.ts:19</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -427,6 +473,12 @@
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
 								<a href="smcnodekit.html#getbatterycount" class="tsd-kind-icon">get<wbr>Battery<wbr>Count</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="smcnodekit.html#getbatterycycles" class="tsd-kind-icon">get<wbr>Battery<wbr>Cycles</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="smcnodekit.html#getbatteryhealth" class="tsd-kind-icon">get<wbr>Battery<wbr>Health</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
 								<a href="smcnodekit.html#getcputemp" class="tsd-kind-icon">get<wbr>Cpu<wbr>Temp</a>

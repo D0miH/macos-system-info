@@ -86,4 +86,18 @@ export class SMCNodeKit {
     public isOnAc(): boolean {
         return this.smcKit.isOnAc();
     }
+
+    /**
+     * Returns the health of the battery in percent.
+     */
+    public getBatteryHealth(): number {
+        return this.smcKit.getBatteryHealth();
+    }
+
+    /**
+     * Returns the cycles of the battery.
+     */
+    public getBatteryCycles(): number {
+        return this.smcKit.getBatteryCycles();
+    }
 }

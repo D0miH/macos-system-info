@@ -26,6 +26,8 @@ public:
 
     static NAN_METHOD(GetBatteryCountWrapper);
     static NAN_METHOD(IsChargingBatteryWrapper);
+    static NAN_METHOD(GetBatteryHealthWrapper);
+    static NAN_METHOD(GetBatteryCyclesWrapper);
 
 private:
     SMCKit *smcKit;

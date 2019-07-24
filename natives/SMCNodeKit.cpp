@@ -20,6 +20,8 @@ NAN_MODULE_INIT(SMCNodeKit::Init)
     Nan::SetPrototypeMethod(ctor, "getCurrentFanSpeed", GetCurrentFanSpeedWrapper);
     Nan::SetPrototypeMethod(ctor, "getBatteryCount", GetBatteryCountWrapper);
     Nan::SetPrototypeMethod(ctor, "isChargingBattery", IsChargingBatteryWrapper);
+    Nan::SetPrototypeMethod(ctor, "getBatteryHealth", GetBatteryHealthWrapper);
+    Nan::SetPrototypeMethod(ctor, "getBatteryCycles", GetBatteryCyclesWrapper);
 
     Nan::Set(target, Nan::New("SMCNodeKit").ToLocalChecked(), Nan::GetFunction(ctor).ToLocalChecked());
 }
@@ -308,6 +310,48 @@ NAN_METHOD(SMCNodeKit::IsChargingBatteryWrapper)
     try
     {
         info.GetReturnValue().Set(self->smcKit->isChargingBattery());
+        return;
+    }
+    catch (const std::runtime_error &e)
+    {
+        return Nan::ThrowError(Nan::New(e.what()).ToLocalChecked());
+    }
+}
+
+NAN_METHOD(SMCNodeKit::GetBatteryHealthWrapper)
+{
+    // unwrap the instance
+    SMCNodeKit *self = Nan::ObjectWrap::Unwrap<SMCNodeKit>(info.This());
+
+    if (info.Length() != 0)
+    {
+        return Nan::ThrowError(Nan::New("No arguments expected").ToLocalChecked());
+    }
+
+    try
+    {
+        info.GetReturnValue().Set(self->smcKit->getBatteryHealth());
+        return;
+    }
+    catch (const std::runtime_error &e)
+    {
+        return Nan::ThrowError(Nan::New(e.what()).ToLocalChecked());
+    }
+}
+
+NAN_METHOD(SMCNodeKit::GetBatteryCyclesWrapper)
+{
+    // unwrap the instance
+    SMCNodeKit *self = Nan::ObjectWrap::Unwrap<SMCNodeKit>(info.This());
+
+    if (info.Length() != 0)
+    {
+        return Nan::ThrowError(Nan::New("No arguments expected").ToLocalChecked());
+    }
+
+    try
+    {
+        info.GetReturnValue().Set(self->smcKit->getBatteryCycles());
         return;
     }
     catch (const std::runtime_error &e)
