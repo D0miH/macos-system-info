@@ -14,6 +14,7 @@ NAN_MODULE_INIT(SMCNodeKit::Init)
     Nan::SetPrototypeMethod(ctor, "close", CloseWrapper);
     Nan::SetPrototypeMethod(ctor, "getKeyInfo", GetKeyInfoWrapper);
     Nan::SetPrototypeMethod(ctor, "getCpuTemp", GetCpuTempWrapper);
+    Nan::SetPrototypeMethod(ctor, "getCpuUsage", GetCpuUsageWrapper);
     Nan::SetPrototypeMethod(ctor, "getFanCount", GetFanCountWrapper);
     Nan::SetPrototypeMethod(ctor, "getMinFanSpeed", GetMinFanSpeedWrapper);
     Nan::SetPrototypeMethod(ctor, "getMaxFanSpeed", GetMaxFanSpeedWrapper);
@@ -147,7 +148,35 @@ NAN_METHOD(SMCNodeKit::GetCpuTempWrapper)
 
     try
     {
-        info.GetReturnValue().Set(self->smcKit->getCPUTemp());
+        info.GetReturnValue().Set(self->smcKit->getCpuTemp());
+        return;
+    }
+    catch (const std::runtime_error &e)
+    {
+        return Nan::ThrowError(Nan::New(e.what()).ToLocalChecked());
+    }
+}
+
+NAN_METHOD(SMCNodeKit::GetCpuUsageWrapper)
+{
+    // unwrap the instance
+    SMCNodeKit *self = Nan::ObjectWrap::Unwrap<SMCNodeKit>(info.This());
+
+    if (info.Length() != 0)
+    {
+        return Nan::ThrowError(Nan::New("No arguments expected").ToLocalChecked());
+    }
+
+    try
+    {
+        std::vector<float> cpuUsage = self->smcKit->getCpuUsage();
+        v8::Local<v8::Array> result = Nan::New<v8::Array>(4);
+        Nan::Set(result, 0, Nan::New(cpuUsage[0]));
+        Nan::Set(result, 1, Nan::New(cpuUsage[1]));
+        Nan::Set(result, 2, Nan::New(cpuUsage[2]));
+        Nan::Set(result, 3, Nan::New(cpuUsage[3]));
+
+        info.GetReturnValue().Set(result);
         return;
     }
     catch (const std::runtime_error &e)

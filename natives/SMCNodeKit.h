@@ -18,6 +18,7 @@ public:
     static NAN_METHOD(GetKeyInfoWrapper);
 
     static NAN_METHOD(GetCpuTempWrapper);
+    static NAN_METHOD(GetCpuUsageWrapper);
 
     static NAN_METHOD(GetFanCountWrapper);
     static NAN_METHOD(GetMinFanSpeedWrapper);

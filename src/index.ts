@@ -43,6 +43,13 @@ export class SMCNodeKit {
     }
 
     /**
+     * Returns the current cpu usage in percent of the user, system, idle and nice in an array with this order.
+     */
+    public getCpuUsage(): number[] {
+        return this.smcKit.getCpuUsage();
+    }
+
+    /**
      * Returns the number of fans of the machine.
      */
     public getFanCount(): number {
