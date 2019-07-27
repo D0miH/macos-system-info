@@ -1,24 +1,24 @@
-# smc-node-kit
+# macos-system-info
 
-[![Build Status](https://img.shields.io/travis/D0miH/smc-node-kit.svg?style=flat-square)](https://travis-ci.org/D0miH/smc-node-kit) [![npm](https://img.shields.io/npm/v/smc-node-kit.svg?style=flat-square)](https://www.npmjs.com/package/smc-node-kit)
+[![Build Status](https://img.shields.io/travis/D0miH/macos-system-info.svg?style=flat-square)](https://travis-ci.org/D0miH/macos-system-info) [![npm](https://img.shields.io/npm/v/macos-system-info.svg?style=flat-square)](https://www.npmjs.com/package/macos-system-info)
 
-### Library to easily communicate with the Apple SMC through Node.js
+### Library to easily read system information about your mac using Node.js
 
 ## Installation
 
 ```sh
-npm install smc-node-kit
+npm install macos-system-info
 ```
 
 or
 
 ```sh
-yarn add smc-node-kit
+yarn add macos-system-info
 ```
 
 ## Documentation
 
-You can find the documentation [here](https://d0mih.github.io/smc-node-kit/).
+You can find the documentation [here](https://d0mih.github.io/macos-system-info/).
 
 ## Usage
 
@@ -26,32 +26,32 @@ This little code snipped shows how to read the current CPU temperature:
 
 ```javascript
 // import the class
-const { SMCNodeKit } = require('smc-node-kit');
+const { SystemInfo } = require('macos-system-info');
 
 // create a new instance of the class and open the connection to the SMC
-const smcKit = new SMCNodeKit();
-smcKit.open();
+const systemInfo = new SystemInfo();
+systemInfo.open();
 
 // read the cpu temperature
-console.log(smcKit.getCpuTemp());
+console.log(systemInfo.getCpuTemp());
 
 // close the connection to the SMC
-smcKit.close();
+systemInfo.close();
 ```
 
 If you are using typescript you can use named imports:
 
 ```javascript
 // import the class
-import { SMCNodeKit } from 'smc-node-kit';
+import { SystemInfo } from 'macos-system-info';
 
 // create a new instance of the class and open the connection to the SMC
-const smcKit: SMCNodeKit = new SMCNodeKit();
-smcKit.open();
+const systemInfo: SystemInfo = new SystemInfo();
+systemInfo.open();
 
 // read the cpu temperature
-console.log(smcKit.getCpuTemp());
+console.log(systemInfo.getCpuTemp());
 
 // close the connection to the SMC
-smcKit.close();
+systemInfo.close();
 ```
