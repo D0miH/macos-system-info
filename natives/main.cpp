@@ -1,9 +1,9 @@
 #include <nan.h>
-#include "SMCNodeKit.h"
+#include "SystemInfo.h"
 
 NAN_MODULE_INIT(InitModule)
 {
-    SMCNodeKit::Init(target);
+    SystemInfo::Init(target);
 }
 
 NODE_MODULE(myModule, InitModule);

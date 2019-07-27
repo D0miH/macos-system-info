@@ -1,10 +1,10 @@
-#ifndef SMC_NODE_KIT_H
-#define SMC_NODE_KIT_H
+#ifndef SYSTEM_INFO_H
+#define SYSTEM_INFO_H
 
 #include <nan.h>
-#include "SMCPPKit/SMCKit.h"
+#include "lib/System.h"
 
-class SMCNodeKit : public Nan::ObjectWrap
+class SystemInfo : public Nan::ObjectWrap
 {
 public:
     static Nan::Persistent<v8::FunctionTemplate> constructor;
@@ -31,7 +31,7 @@ public:
     static NAN_METHOD(GetBatteryCyclesWrapper);
 
 private:
-    SMCKit *smcKit;
+    System *system;
 };
 
 #endif

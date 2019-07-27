@@ -1,30 +1,30 @@
 /** @hidden */
-const binding = require('../binding/smc-node-kit.node');
+const binding = require('../binding/macos-system-info');
 
 export interface IKeyInfo {
     type: string;
     size: number;
 }
 
-export class SMCNodeKit {
-    private smcKit: any;
+export class SystemInfo {
+    private system: any;
 
     constructor() {
-        this.smcKit = new binding.SMCNodeKit();
+        this.system = new binding.SystemInfo();
     }
 
     /**
      * Opens a new connection to the SMC.
      */
     public open() {
-        this.smcKit.open();
+        this.system.open();
     }
 
     /**
      * Closes the connection to the SMC.
      */
     public close() {
-        this.smcKit.close();
+        this.system.close();
     }
 
     /**
@@ -32,28 +32,28 @@ export class SMCNodeKit {
      * @param key   The SMC key
      */
     public getKeyInfo(key: string): IKeyInfo {
-        return this.smcKit.getKeyInfo(key);
+        return this.system.getKeyInfo(key);
     }
 
     /**
      * Returns the current temperature of the cpu in degrees celcius.
      */
     public getCpuTemp(): number {
-        return this.smcKit.getCpuTemp();
+        return this.system.getCpuTemp();
     }
 
     /**
      * Returns the current cpu usage in percent of the user, system, idle and nice in an array with this order.
      */
     public getCpuUsage(): number[] {
-        return this.smcKit.getCpuUsage();
+        return this.system.getCpuUsage();
     }
 
     /**
      * Returns the number of fans of the machine.
      */
     public getFanCount(): number {
-        return this.smcKit.getFanCount();
+        return this.system.getFanCount();
     }
 
     /**
@@ -61,7 +61,7 @@ export class SMCNodeKit {
      * @param fanId The fan id
      */
     public getMinFanSpeed(fanId: number): number {
-        return this.smcKit.getMinFanSpeed(fanId);
+        return this.system.getMinFanSpeed(fanId);
     }
 
     /**
@@ -69,7 +69,7 @@ export class SMCNodeKit {
      * @param fanId The fan id
      */
     public getMaxFanSpeed(fanId: number): number {
-        return this.smcKit.getMaxFanSpeed(fanId);
+        return this.system.getMaxFanSpeed(fanId);
     }
 
     /**
@@ -77,34 +77,34 @@ export class SMCNodeKit {
      * @param fanId The fan id
      */
     public getCurrentFanSpeed(fanId: number): number {
-        return this.smcKit.getCurrentFanSpeed(fanId);
+        return this.system.getCurrentFanSpeed(fanId);
     }
 
     /**
      * Returns the number of batteries.
      */
     public getBatteryCount(): number {
-        return this.smcKit.getBatteryCount();
+        return this.system.getBatteryCount();
     }
 
     /**
      * Returns true if the machine is on AC and returns false otherwise.
      */
     public isOnAc(): boolean {
-        return this.smcKit.isOnAc();
+        return this.system.isOnAc();
     }
 
     /**
      * Returns the health of the battery in percent.
      */
     public getBatteryHealth(): number {
-        return this.smcKit.getBatteryHealth();
+        return this.system.getBatteryHealth();
     }
 
     /**
      * Returns the cycles of the battery.
      */
     public getBatteryCycles(): number {
-        return this.smcKit.getBatteryCycles();
+        return this.system.getBatteryCycles();
     }
 }

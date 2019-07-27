@@ -1,14 +1,14 @@
-#include "SMCNodeKit.h"
+#include "SystemInfo.h"
 #include <iostream>
 
-Nan::Persistent<v8::FunctionTemplate> SMCNodeKit::constructor;
+Nan::Persistent<v8::FunctionTemplate> SystemInfo::constructor;
 
-NAN_MODULE_INIT(SMCNodeKit::Init)
+NAN_MODULE_INIT(SystemInfo::Init)
 {
-    v8::Local<v8::FunctionTemplate> ctor = Nan::New<v8::FunctionTemplate>(SMCNodeKit::New);
+    v8::Local<v8::FunctionTemplate> ctor = Nan::New<v8::FunctionTemplate>(SystemInfo::New);
     constructor.Reset(ctor);
     ctor->InstanceTemplate()->SetInternalFieldCount(1);
-    ctor->SetClassName(Nan::New("SMCNodeKit").ToLocalChecked());
+    ctor->SetClassName(Nan::New("SystemInfo").ToLocalChecked());
 
     Nan::SetPrototypeMethod(ctor, "open", OpenWrapper);
     Nan::SetPrototypeMethod(ctor, "close", CloseWrapper);
@@ -24,10 +24,10 @@ NAN_MODULE_INIT(SMCNodeKit::Init)
     Nan::SetPrototypeMethod(ctor, "getBatteryHealth", GetBatteryHealthWrapper);
     Nan::SetPrototypeMethod(ctor, "getBatteryCycles", GetBatteryCyclesWrapper);
 
-    Nan::Set(target, Nan::New("SMCNodeKit").ToLocalChecked(), Nan::GetFunction(ctor).ToLocalChecked());
+    Nan::Set(target, Nan::New("SystemInfo").ToLocalChecked(), Nan::GetFunction(ctor).ToLocalChecked());
 }
 
-NAN_METHOD(SMCNodeKit::New)
+NAN_METHOD(SystemInfo::New)
 {
     // if there were arguments given throw an exception
     if (info.Length() != 0)
@@ -36,19 +36,19 @@ NAN_METHOD(SMCNodeKit::New)
     }
 
     // create the instance and wrap it
-    SMCNodeKit *nodeKit = new SMCNodeKit();
-    nodeKit->Wrap(info.Holder());
+    SystemInfo *systemInfo = new SystemInfo();
+    systemInfo->Wrap(info.Holder());
 
-    // create an SMCKit instance
-    nodeKit->smcKit = new SMCKit();
+    // create an system instance
+    systemInfo->system = new System();
 
     info.GetReturnValue().Set(info.Holder());
 }
 
-NAN_METHOD(SMCNodeKit::OpenWrapper)
+NAN_METHOD(SystemInfo::OpenWrapper)
 {
     // unwrap the instance
-    SMCNodeKit *self = Nan::ObjectWrap::Unwrap<SMCNodeKit>(info.This());
+    SystemInfo *self = Nan::ObjectWrap::Unwrap<SystemInfo>(info.This());
 
     if (info.Length() != 0)
     {
@@ -57,7 +57,7 @@ NAN_METHOD(SMCNodeKit::OpenWrapper)
 
     try
     {
-        self->smcKit->open();
+        self->system->open();
         return;
     }
     catch (const std::runtime_error &e)
@@ -66,10 +66,10 @@ NAN_METHOD(SMCNodeKit::OpenWrapper)
     }
 }
 
-NAN_METHOD(SMCNodeKit::CloseWrapper)
+NAN_METHOD(SystemInfo::CloseWrapper)
 {
     // unwrap the instance
-    SMCNodeKit *self = Nan::ObjectWrap::Unwrap<SMCNodeKit>(info.This());
+    SystemInfo *self = Nan::ObjectWrap::Unwrap<SystemInfo>(info.This());
 
     if (info.Length() != 0)
     {
@@ -78,7 +78,7 @@ NAN_METHOD(SMCNodeKit::CloseWrapper)
 
     try
     {
-        self->smcKit->close();
+        self->system->close();
         return;
     }
     catch (const std::runtime_error &e)
@@ -87,10 +87,10 @@ NAN_METHOD(SMCNodeKit::CloseWrapper)
     }
 }
 
-NAN_METHOD(SMCNodeKit::GetKeyInfoWrapper)
+NAN_METHOD(SystemInfo::GetKeyInfoWrapper)
 {
     // unwrap the instance
-    SMCNodeKit *self = Nan::ObjectWrap::Unwrap<SMCNodeKit>(info.This());
+    SystemInfo *self = Nan::ObjectWrap::Unwrap<SystemInfo>(info.This());
 
     if (info.Length() != 1 || !info[0]->IsString())
     {
@@ -101,7 +101,7 @@ NAN_METHOD(SMCNodeKit::GetKeyInfoWrapper)
 
     try
     {
-        DataType keyInfo = self->smcKit->getKeyInfo(std::string(*Nan::Utf8String(info[0]->ToString(context).ToLocalChecked())));
+        DataType keyInfo = self->system->getKeyInfo(std::string(*Nan::Utf8String(info[0]->ToString(context).ToLocalChecked())));
         v8::Local<v8::String> fourCharCode = v8::String::NewFromUtf8(
                                                  context->GetIsolate(),
                                                  Utils::fourCharCodeToString(keyInfo.type).c_str(),
@@ -136,10 +136,10 @@ NAN_METHOD(SMCNodeKit::GetKeyInfoWrapper)
     }
 }
 
-NAN_METHOD(SMCNodeKit::GetCpuTempWrapper)
+NAN_METHOD(SystemInfo::GetCpuTempWrapper)
 {
     // unwrap the instance
-    SMCNodeKit *self = Nan::ObjectWrap::Unwrap<SMCNodeKit>(info.This());
+    SystemInfo *self = Nan::ObjectWrap::Unwrap<SystemInfo>(info.This());
 
     if (info.Length() != 0)
     {
@@ -148,7 +148,7 @@ NAN_METHOD(SMCNodeKit::GetCpuTempWrapper)
 
     try
     {
-        info.GetReturnValue().Set(self->smcKit->getCpuTemp());
+        info.GetReturnValue().Set(self->system->getCpuTemp());
         return;
     }
     catch (const std::runtime_error &e)
@@ -157,10 +157,10 @@ NAN_METHOD(SMCNodeKit::GetCpuTempWrapper)
     }
 }
 
-NAN_METHOD(SMCNodeKit::GetCpuUsageWrapper)
+NAN_METHOD(SystemInfo::GetCpuUsageWrapper)
 {
     // unwrap the instance
-    SMCNodeKit *self = Nan::ObjectWrap::Unwrap<SMCNodeKit>(info.This());
+    SystemInfo *self = Nan::ObjectWrap::Unwrap<SystemInfo>(info.This());
 
     if (info.Length() != 0)
     {
@@ -169,7 +169,7 @@ NAN_METHOD(SMCNodeKit::GetCpuUsageWrapper)
 
     try
     {
-        std::vector<float> cpuUsage = self->smcKit->getCpuUsage();
+        std::vector<float> cpuUsage = self->system->getCpuUsage();
         v8::Local<v8::Array> result = Nan::New<v8::Array>(4);
         Nan::Set(result, 0, Nan::New(cpuUsage[0]));
         Nan::Set(result, 1, Nan::New(cpuUsage[1]));
@@ -185,10 +185,10 @@ NAN_METHOD(SMCNodeKit::GetCpuUsageWrapper)
     }
 }
 
-NAN_METHOD(SMCNodeKit::GetFanCountWrapper)
+NAN_METHOD(SystemInfo::GetFanCountWrapper)
 {
     // unwrap the instance
-    SMCNodeKit *self = Nan::ObjectWrap::Unwrap<SMCNodeKit>(info.This());
+    SystemInfo *self = Nan::ObjectWrap::Unwrap<SystemInfo>(info.This());
 
     if (info.Length() != 0)
     {
@@ -197,7 +197,7 @@ NAN_METHOD(SMCNodeKit::GetFanCountWrapper)
 
     try
     {
-        info.GetReturnValue().Set(self->smcKit->getFanCount());
+        info.GetReturnValue().Set(self->system->getFanCount());
         return;
     }
     catch (const std::runtime_error &e)
@@ -206,10 +206,10 @@ NAN_METHOD(SMCNodeKit::GetFanCountWrapper)
     }
 }
 
-NAN_METHOD(SMCNodeKit::GetMinFanSpeedWrapper)
+NAN_METHOD(SystemInfo::GetMinFanSpeedWrapper)
 {
     // unwrap the instance
-    SMCNodeKit *self = Nan::ObjectWrap::Unwrap<SMCNodeKit>(info.This());
+    SystemInfo *self = Nan::ObjectWrap::Unwrap<SystemInfo>(info.This());
 
     if (info.Length() == 0 || !info[0]->IsNumber())
     {
@@ -221,7 +221,7 @@ NAN_METHOD(SMCNodeKit::GetMinFanSpeedWrapper)
         int fanId = info[0]->IntegerValue(Nan::GetCurrentContext()).FromMaybe(-1);
 
         // check if the fan id is out of bound
-        int fanCount = self->smcKit->getFanCount();
+        int fanCount = self->system->getFanCount();
         if (fanCount <= fanId)
         {
             throw std::runtime_error(
@@ -230,7 +230,7 @@ NAN_METHOD(SMCNodeKit::GetMinFanSpeedWrapper)
                 std::string(" fans."));
         }
 
-        info.GetReturnValue().Set(self->smcKit->getMinFanSpeed(fanId));
+        info.GetReturnValue().Set(self->system->getMinFanSpeed(fanId));
         return;
     }
     catch (const std::runtime_error &e)
@@ -239,10 +239,10 @@ NAN_METHOD(SMCNodeKit::GetMinFanSpeedWrapper)
     }
 }
 
-NAN_METHOD(SMCNodeKit::GetMaxFanSpeedWrapper)
+NAN_METHOD(SystemInfo::GetMaxFanSpeedWrapper)
 {
     // unwrap the instance
-    SMCNodeKit *self = Nan::ObjectWrap::Unwrap<SMCNodeKit>(info.This());
+    SystemInfo *self = Nan::ObjectWrap::Unwrap<SystemInfo>(info.This());
 
     if (info.Length() == 0 || !info[0]->IsNumber())
     {
@@ -254,7 +254,7 @@ NAN_METHOD(SMCNodeKit::GetMaxFanSpeedWrapper)
         int fanId = info[0]->IntegerValue(Nan::GetCurrentContext()).FromMaybe(-1);
 
         // check if the fan id is out of bound
-        int fanCount = self->smcKit->getFanCount();
+        int fanCount = self->system->getFanCount();
         if (fanCount <= fanId)
         {
             throw std::runtime_error(
@@ -263,7 +263,7 @@ NAN_METHOD(SMCNodeKit::GetMaxFanSpeedWrapper)
                 std::string(" fans."));
         }
 
-        info.GetReturnValue().Set(self->smcKit->getMaxFanSpeed(fanId));
+        info.GetReturnValue().Set(self->system->getMaxFanSpeed(fanId));
         return;
     }
     catch (const std::runtime_error &e)
@@ -272,10 +272,10 @@ NAN_METHOD(SMCNodeKit::GetMaxFanSpeedWrapper)
     }
 }
 
-NAN_METHOD(SMCNodeKit::GetCurrentFanSpeedWrapper)
+NAN_METHOD(SystemInfo::GetCurrentFanSpeedWrapper)
 {
     // unwrap the instance
-    SMCNodeKit *self = Nan::ObjectWrap::Unwrap<SMCNodeKit>(info.This());
+    SystemInfo *self = Nan::ObjectWrap::Unwrap<SystemInfo>(info.This());
 
     if (info.Length() == 0 || !info[0]->IsNumber())
     {
@@ -287,7 +287,7 @@ NAN_METHOD(SMCNodeKit::GetCurrentFanSpeedWrapper)
         int fanId = info[0]->IntegerValue(Nan::GetCurrentContext()).FromMaybe(-1);
 
         // check if the fan id is out of bound
-        int fanCount = self->smcKit->getFanCount();
+        int fanCount = self->system->getFanCount();
         if (fanCount <= fanId)
         {
             throw std::runtime_error(
@@ -296,7 +296,7 @@ NAN_METHOD(SMCNodeKit::GetCurrentFanSpeedWrapper)
                 std::string(" fans."));
         }
 
-        info.GetReturnValue().Set(self->smcKit->getCurrentFanSpeed(fanId));
+        info.GetReturnValue().Set(self->system->getCurrentFanSpeed(fanId));
         return;
     }
     catch (const std::runtime_error &e)
@@ -305,10 +305,10 @@ NAN_METHOD(SMCNodeKit::GetCurrentFanSpeedWrapper)
     }
 }
 
-NAN_METHOD(SMCNodeKit::GetBatteryCountWrapper)
+NAN_METHOD(SystemInfo::GetBatteryCountWrapper)
 {
     // unwrap the instance
-    SMCNodeKit *self = Nan::ObjectWrap::Unwrap<SMCNodeKit>(info.This());
+    SystemInfo *self = Nan::ObjectWrap::Unwrap<SystemInfo>(info.This());
 
     if (info.Length() != 0)
     {
@@ -317,7 +317,7 @@ NAN_METHOD(SMCNodeKit::GetBatteryCountWrapper)
 
     try
     {
-        info.GetReturnValue().Set(self->smcKit->getBatteryCount());
+        info.GetReturnValue().Set(self->system->getBatteryCount());
         return;
     }
     catch (const std::runtime_error &e)
@@ -326,10 +326,10 @@ NAN_METHOD(SMCNodeKit::GetBatteryCountWrapper)
     }
 }
 
-NAN_METHOD(SMCNodeKit::IsChargingBatteryWrapper)
+NAN_METHOD(SystemInfo::IsChargingBatteryWrapper)
 {
     // unwrap the instance
-    SMCNodeKit *self = Nan::ObjectWrap::Unwrap<SMCNodeKit>(info.This());
+    SystemInfo *self = Nan::ObjectWrap::Unwrap<SystemInfo>(info.This());
 
     if (info.Length() != 0)
     {
@@ -338,7 +338,7 @@ NAN_METHOD(SMCNodeKit::IsChargingBatteryWrapper)
 
     try
     {
-        info.GetReturnValue().Set(self->smcKit->isChargingBattery());
+        info.GetReturnValue().Set(self->system->isChargingBattery());
         return;
     }
     catch (const std::runtime_error &e)
@@ -347,10 +347,10 @@ NAN_METHOD(SMCNodeKit::IsChargingBatteryWrapper)
     }
 }
 
-NAN_METHOD(SMCNodeKit::GetBatteryHealthWrapper)
+NAN_METHOD(SystemInfo::GetBatteryHealthWrapper)
 {
     // unwrap the instance
-    SMCNodeKit *self = Nan::ObjectWrap::Unwrap<SMCNodeKit>(info.This());
+    SystemInfo *self = Nan::ObjectWrap::Unwrap<SystemInfo>(info.This());
 
     if (info.Length() != 0)
     {
@@ -359,7 +359,7 @@ NAN_METHOD(SMCNodeKit::GetBatteryHealthWrapper)
 
     try
     {
-        info.GetReturnValue().Set(self->smcKit->getBatteryHealth());
+        info.GetReturnValue().Set(self->system->getBatteryHealth());
         return;
     }
     catch (const std::runtime_error &e)
@@ -368,10 +368,10 @@ NAN_METHOD(SMCNodeKit::GetBatteryHealthWrapper)
     }
 }
 
-NAN_METHOD(SMCNodeKit::GetBatteryCyclesWrapper)
+NAN_METHOD(SystemInfo::GetBatteryCyclesWrapper)
 {
     // unwrap the instance
-    SMCNodeKit *self = Nan::ObjectWrap::Unwrap<SMCNodeKit>(info.This());
+    SystemInfo *self = Nan::ObjectWrap::Unwrap<SystemInfo>(info.This());
 
     if (info.Length() != 0)
     {
@@ -380,7 +380,7 @@ NAN_METHOD(SMCNodeKit::GetBatteryCyclesWrapper)
 
     try
     {
-        info.GetReturnValue().Set(self->smcKit->getBatteryCycles());
+        info.GetReturnValue().Set(self->system->getBatteryCycles());
         return;
     }
     catch (const std::runtime_error &e)

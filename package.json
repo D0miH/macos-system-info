@@ -1,7 +1,7 @@
 {
-    "name": "smc-node-kit",
+    "name": "macos-system-info",
     "version": "1.2.0",
-    "description": "Node.js bindings to communicate with the Apple SMC.",
+    "description": "Node.js bindings to read system information about your mac.",
     "main": "lib/src/index.js",
     "types": "lib/src/index.d.ts",
     "scripts": {
@@ -12,9 +12,9 @@
         "prepublishOnly": "npm run publish-binary"
     },
     "binary": {
-        "module_name": "smc-node-kit",
+        "module_name": "macos-system-info",
         "module_path": "./lib/binding/",
-        "host": "https://github.com/D0miH/SMCNodeKit/releases/download/",
+        "host": "https://github.com/D0miH/macos-system-info/releases/download/",
         "remote_path": "{version}"
     },
     "gypfile": true,
@@ -25,20 +25,21 @@
     ],
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/D0miH/SMCNodeKit.git"
+        "url": "git+https://github.com/D0miH/macos-system-info.git"
     },
     "keywords": [
         "smc",
         "node",
         "apple",
-        "mac"
+        "mac",
+        "systeminformation"
     ],
     "author": "D0miH",
     "license": "MIT",
     "bugs": {
-        "url": "https://github.com/D0miH/SMCNodeKit/issues"
+        "url": "https://github.com/D0miH/macos-system-info/issues"
     },
-    "homepage": "https://github.com/D0miH/SMCNodeKit#readme",
+    "homepage": "https://github.com/D0miH/macos-system-info#readme",
     "devDependencies": {
         "@types/node": "^12.0.10",
         "aws-sdk": "^2.485.0",

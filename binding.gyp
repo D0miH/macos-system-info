@@ -3,8 +3,8 @@
         {
             "target_name": "<(module_name)",
             "sources": [
-                "natives/SMCPPKit/SMCKit.cpp",
-                "natives/SMCNodeKit.cpp",
+                "natives/lib/System.cpp",
+                "natives/SystemInfo.cpp",
                 "natives/main.cpp"
             ],
             'include_dirs': [

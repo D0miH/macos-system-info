@@ -1,0 +1,3 @@
+[submodule "natives/lib"]
+	path = natives/lib
+	url = https://github.com/D0miH/macos-system-info-library
