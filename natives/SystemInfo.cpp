@@ -14,6 +14,7 @@ NAN_MODULE_INIT(SystemInfo::Init)
     Nan::SetPrototypeMethod(ctor, "close", CloseWrapper);
     Nan::SetPrototypeMethod(ctor, "getKeyInfo", GetKeyInfoWrapper);
     Nan::SetPrototypeMethod(ctor, "getMemoryUsage", GetMemoryUsageWrapper);
+    Nan::SetPrototypeMethod(ctor, "getTotalMemory", GetTotalMemoryWrapper);
     Nan::SetPrototypeMethod(ctor, "getCpuTemp", GetCpuTempWrapper);
     Nan::SetPrototypeMethod(ctor, "getCpuUsage", GetCpuUsageWrapper);
     Nan::SetPrototypeMethod(ctor, "getFanCount", GetFanCountWrapper);
@@ -159,6 +160,27 @@ NAN_METHOD(SystemInfo::GetMemoryUsageWrapper)
         Nan::Set(result, 4, Nan::New(memUsage[4]));
 
         info.GetReturnValue().Set(result);
+        return;
+    }
+    catch (const std::runtime_error &e)
+    {
+        return Nan::ThrowError(Nan::New(e.what()).ToLocalChecked());
+    }
+}
+
+NAN_METHOD(SystemInfo::GetTotalMemoryWrapper)
+{
+    // unwrap the instance
+    SystemInfo *self = Nan::ObjectWrap::Unwrap<SystemInfo>(info.This());
+
+    if (info.Length() != 0)
+    {
+        return Nan::ThrowError(Nan::New("No arguments expected").ToLocalChecked());
+    }
+
+    try
+    {
+        info.GetReturnValue().Set(self->system->getTotalMemory());
         return;
     }
     catch (const std::runtime_error &e)

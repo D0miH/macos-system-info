@@ -18,6 +18,7 @@ public:
     static NAN_METHOD(GetKeyInfoWrapper);
 
     static NAN_METHOD(GetMemoryUsageWrapper);
+    static NAN_METHOD(GetTotalMemoryWrapper);
 
     static NAN_METHOD(GetCpuTempWrapper);
     static NAN_METHOD(GetCpuUsageWrapper);

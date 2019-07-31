@@ -45,6 +45,13 @@ export class SystemInfo {
     }
 
     /**
+     * Returns the total amount of ram in gigabyte.
+     */
+    public getTotalMemory(): number {
+        return this.system.getTotalMemory();
+    }
+
+    /**
      * Returns the current temperature of the cpu in degrees celcius.
      */
     public getCpuTemp(): number {
