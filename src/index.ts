@@ -36,6 +36,15 @@ export class SystemInfo {
     }
 
     /**
+     * Returns the current ram usage in gigabyte.
+     * The function returns an array with 5 values:
+     * [free, active, inactive, wired, compressed]
+     */
+    public getMemoryUsage(): number[] {
+        return this.system.getMemoryUsage();
+    }
+
+    /**
      * Returns the current temperature of the cpu in degrees celcius.
      */
     public getCpuTemp(): number {

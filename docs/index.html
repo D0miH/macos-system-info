@@ -64,42 +64,42 @@
 	<div class="row">
 		<div class="col-8 col-content">
 			<div class="tsd-panel tsd-typography">
-				<h1 id="smc-node-kit">smc-node-kit</h1>
-				<p><a href="https://travis-ci.org/D0miH/smc-node-kit"><img src="https://img.shields.io/travis/D0miH/smc-node-kit.svg?style=flat-square" alt="Build Status"></a> <a href="https://www.npmjs.com/package/smc-node-kit"><img src="https://img.shields.io/npm/v/smc-node-kit.svg?style=flat-square" alt="npm"></a></p>
-				<h3 id="library-to-easily-communicate-with-the-apple-smc-through-node-js">Library to easily communicate with the Apple SMC through Node.js</h3>
+				<h1 id="macos-system-info">macos-system-info</h1>
+				<p><a href="https://travis-ci.org/D0miH/macos-system-info"><img src="https://img.shields.io/travis/D0miH/macos-system-info.svg?style=flat-square" alt="Build Status"></a> <a href="https://www.npmjs.com/package/macos-system-info"><img src="https://img.shields.io/npm/v/macos-system-info.svg?style=flat-square" alt="npm"></a></p>
+				<h3 id="library-to-easily-read-system-information-about-your-mac-using-node-js">Library to easily read system information about your mac using Node.js</h3>
 				<h2 id="installation">Installation</h2>
-				<pre><code class="language-sh">npm install smc-node-kit</code></pre>
+				<pre><code class="language-sh">npm install macos-system-info</code></pre>
 				<p>or</p>
-				<pre><code class="language-sh">yarn add smc-node-kit</code></pre>
+				<pre><code class="language-sh">yarn add macos-system-info</code></pre>
 				<h2 id="documentation">Documentation</h2>
-				<p>You can find the documentation <a href="https://d0mih.github.io/smc-node-kit/">here</a>.</p>
+				<p>You can find the documentation <a href="https://d0mih.github.io/macos-system-info/">here</a>.</p>
 				<h2 id="usage">Usage</h2>
 				<p>This little code snipped shows how to read the current CPU temperature:</p>
 				<pre><code class="language-javascript"><span class="hljs-comment">// import the class</span>
-<span class="hljs-keyword">const</span> { SMCNodeKit } = <span class="hljs-built_in">require</span>(<span class="hljs-string">'smc-node-kit'</span>);
+<span class="hljs-keyword">const</span> { SystemInfo } = <span class="hljs-built_in">require</span>(<span class="hljs-string">'macos-system-info'</span>);
 
 <span class="hljs-comment">// create a new instance of the class and open the connection to the SMC</span>
-<span class="hljs-keyword">const</span> smcKit = <span class="hljs-keyword">new</span> SMCNodeKit();
-smcKit.open();
+<span class="hljs-keyword">const</span> systemInfo = <span class="hljs-keyword">new</span> SystemInfo();
+systemInfo.open();
 
 <span class="hljs-comment">// read the cpu temperature</span>
-<span class="hljs-built_in">console</span>.log(smcKit.getCpuTemp());
+<span class="hljs-built_in">console</span>.log(systemInfo.getCpuTemp());
 
 <span class="hljs-comment">// close the connection to the SMC</span>
-smcKit.close();</code></pre>
+systemInfo.close();</code></pre>
 				<p>If you are using typescript you can use named imports:</p>
 				<pre><code class="language-javascript"><span class="hljs-comment">// import the class</span>
-<span class="hljs-keyword">import</span> { SMCNodeKit } <span class="hljs-keyword">from</span> <span class="hljs-string">'smc-node-kit'</span>;
+<span class="hljs-keyword">import</span> { SystemInfo } <span class="hljs-keyword">from</span> <span class="hljs-string">'macos-system-info'</span>;
 
 <span class="hljs-comment">// create a new instance of the class and open the connection to the SMC</span>
-<span class="hljs-keyword">const</span> smcKit: SMCNodeKit = <span class="hljs-keyword">new</span> SMCNodeKit();
-smcKit.open();
+<span class="hljs-keyword">const</span> systemInfo: SystemInfo = <span class="hljs-keyword">new</span> SystemInfo();
+systemInfo.open();
 
 <span class="hljs-comment">// read the cpu temperature</span>
-<span class="hljs-built_in">console</span>.log(smcKit.getCpuTemp());
+<span class="hljs-built_in">console</span>.log(systemInfo.getCpuTemp());
 
 <span class="hljs-comment">// close the connection to the SMC</span>
-smcKit.close();</code></pre>
+systemInfo.close();</code></pre>
 			</div>
 		</div>
 		<div class="col-4 col-menu menu-sticky-wrap menu-highlight">
